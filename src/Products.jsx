@@ -2,16 +2,17 @@ import Product from './Product';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import ProductCart from './ProductCart';
 
-const products = Array.from({ length: 5 });
+const dummyProducts = Array.from({ length: 5 });
 
-function Products() {
+function Products({ classNameRow, classNameCol, isCartProduct, products = dummyProducts }) {
     return (
         <Container>
-            <Row xs={1} md={2} lg={3} xl={4}>
+            <Row xs={1} md={2} lg={3} xl={4} className={classNameRow}>
                 {products.map((product, index) => (
-                    <Col key={index}>
-                        <Product />
+                    <Col key={index} className={classNameCol}>
+                        {isCartProduct ? <ProductCart /> : <Product />}
                     </Col>
                 ))}
             </Row>

@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
-function NavigationBar() {
+function NavigationBar({ handleShowCart }) {
   return (
     <Navbar expand="lg" className="bg-body-tertiary mb-4">
       <Container>
@@ -24,6 +24,11 @@ function NavigationBar() {
                 Separated link
               </NavDropdown.Item>
             </NavDropdown>
+          </Nav>
+          <Nav>
+            <Nav.Link href="#cart" onClick={handleShowCart}>
+              Cart
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
