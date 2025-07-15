@@ -17,6 +17,10 @@ function App() {
   const handleShowAuthForm = () => setShowAuthForm(true);
   const handleHideAuthForm = () => setShowAuthForm(false);
 
+  const handleDeleteCartProduct = product => setCartProducts(cartProducts.filter(cartProduct => cartProduct.id !== product.id));
+
+  console.log({ cartProducts });
+
   return (
     <>
       <NavigationBar
@@ -25,7 +29,10 @@ function App() {
         handleShowAuthForm={handleShowAuthForm} />
       {/* <Products /> */}
       <ProductPage setCartProducts={setCartProducts} />
-      <Cart showCart={showCart} handleHideCart={handleHideCart} cartProducts={cartProducts} />
+      <Cart showCart={showCart}
+        handleHideCart={handleHideCart}
+        cartProducts={cartProducts}
+        handleDeleteCartProduct={handleDeleteCartProduct} />
       <AuthModal show={showAuthForm} handleClose={handleHideAuthForm} />
     </>
   )
