@@ -2,8 +2,9 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Badge from 'react-bootstrap/Badge';
 
-function NavigationBar({ handleShowCart }) {
+function NavigationBar({ handleShowCart, cartProducts }) {
   return (
     <Navbar expand="lg" className="bg-body-tertiary mb-4">
       <Container>
@@ -27,7 +28,7 @@ function NavigationBar({ handleShowCart }) {
           </Nav>
           <Nav>
             <Nav.Link href="#cart" onClick={handleShowCart}>
-              Cart
+              Cart <Badge bg="success">{cartProducts.length}</Badge>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

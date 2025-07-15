@@ -14,7 +14,7 @@ function App() {
 
   return (
     <>
-      <NavigationBar handleShowCart={handleShowCart} />
+      <NavigationBar handleShowCart={handleShowCart} cartProducts={cartProducts} />
       {/* <Products /> */}
       <ProductPage setCartProducts={setCartProducts} />
       <Cart showCart={showCart} handleHideCart={handleHideCart} cartProducts={cartProducts} />
