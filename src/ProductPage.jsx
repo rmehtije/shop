@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 function ProductPage({ setCartProducts }) {
     const addProduct = product => setCartProducts(products => [...products, product]);
 
-    const dummyProduct = { id: 1 };
+    const dummyProduct = { id: Math.random() };
 
     return (
         <Container>

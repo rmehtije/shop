@@ -4,11 +4,16 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-function ProductCart() {
+function ProductCart({ handleDeleteCartProduct, product }) {
     const [count, setCount] = React.useState(1);
 
     const handleAddCount = () => setCount(count + 1);
-    const handleDelete = () => setCount(count - 1);
+    const handleDelete = () => {
+        const newCount = count - 1;
+
+        if (newCount <= 0) handleDeleteCartProduct(product);
+        else setCount(newCount);
+    }
 
     return (
         <Card>
@@ -20,6 +25,8 @@ function ProductCart() {
                             <span className='fs-4'>Card Title</span>
                             <br/>
                             Count: {count}
+                            <br />
+                            ID: {product.id}
                         </Card.Text>
                     </Col>
                     <Col>
