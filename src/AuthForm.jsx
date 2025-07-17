@@ -1,25 +1,30 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import AuthControl from './AuthControl';
+import { singIn } from './services/api/auth';
 
 const actions = {
     SignIn: 'signIn',
     SignUp: 'signUp'
 };
 
-function AuthForm({ formRef }) {
+function AuthForm({ formRef, setAuthData, handleClose }) {
     const [action, setAction] = React.useState(actions.SignIn);
 
     const handleOnSelect = (action) => setAction(action);
 
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
         event.preventDefault();
 
         const username = event.target.username.value;
-        const email = event.target.email?.value;
+        // const email = event.target.email?.value;
         const password = event.target.password.value;
-        
-        console.log({ username, email, password });
+
+        const { token } = await singIn(username, password);
+
+        setAuthData(authData => ({ ...authData, jwt: token }));
+
+        handleClose();
     };
 
     return (
@@ -27,7 +32,12 @@ function AuthForm({ formRef }) {
             <AuthControl action={action} actions={actions} handleOnSelect={handleOnSelect} />
             <Form.Group className="mb-3" controlId="formBasicUserName">
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter username" name="username" />
+                <Form.Control 
+                    type="text" 
+                    placeholder="Enter username" 
+                    name="username"
+                    defaultValue="derek"
+                    />
                 {/* <Form.Text className="text-muted">
                     We'll never share your email with anyone else.
                 </Form.Text> */}
@@ -36,7 +46,11 @@ function AuthForm({ formRef }) {
             {action === actions.SignUp && (
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" name="email" />
+                    <Form.Control 
+                        type="email" 
+                        placeholder="Enter email" 
+                        name="email" 
+                        />
                     {/* <Form.Text className="text-muted">
                     We'll never share your email with anyone else.
                 </Form.Text> */}
@@ -45,7 +59,11 @@ function AuthForm({ formRef }) {
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" name="password" />
+                <Form.Control 
+                    type="password" 
+                    placeholder="Password" 
+                    name="password" 
+                    defaultValue="jklg*_56" />
             </Form.Group>
         </Form>
     );

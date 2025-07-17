@@ -6,7 +6,7 @@ import ProductCart from './ProductCart';
 
 const dummyProducts = Array.from({ length: 5 });
 
-function Products({ classNameRow, classNameCol, isCartProduct, products = dummyProducts, handleDeleteCartProduct }) {
+function Products({ classNameRow, classNameCol, isCartProduct, products = dummyProducts, handleDeleteCartProduct, addProduct }) {
     return (
         <Container>
             <Row xs={1} md={2} lg={3} xl={4} className={classNameRow}>
@@ -16,7 +16,7 @@ function Products({ classNameRow, classNameCol, isCartProduct, products = dummyP
                             <ProductCart
                                 product={product}
                                 handleDeleteCartProduct={handleDeleteCartProduct}
-                            /> : <Product />}
+                            /> : <Product product={product} addProduct={addProduct} />}
                     </Col>
                 ))}
             </Row>
