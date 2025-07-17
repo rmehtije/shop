@@ -5,9 +5,7 @@ import Badge from 'react-bootstrap/Badge';
 import Category from "./Category";
 import Button from 'react-bootstrap/Button';
 
-function ProductPage({ setCartProducts }) {
-    const addProduct = product => setCartProducts(products => [...products, product]);
-
+function ProductPage({ addProduct }) {
     const dummyProduct = { id: Math.random() };
 
     return (

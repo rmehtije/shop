@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Badge from 'react-bootstrap/Badge';
 
-function NavigationBar({ handleShowCart, cartProducts, handleShowAuthForm }) {
+function NavigationBar({ handleShowCart, cartProducts, handleShowAuthForm, authData }) {
   return (
     <Navbar expand="lg" className="bg-body-tertiary mb-4">
       <Container>
@@ -27,9 +27,13 @@ function NavigationBar({ handleShowCart, cartProducts, handleShowAuthForm }) {
             </NavDropdown>
           </Nav>
           <Nav>
-            <Nav.Link onClick={handleShowAuthForm}>
-              Login
-            </Nav.Link>
+            {authData.data.user ?
+              (<Navbar.Text>{authData.data.user}</Navbar.Text>)
+              : (
+                <Nav.Link onClick={handleShowAuthForm}>
+                  Login
+                </Nav.Link>
+              )}
             <Nav.Link href="#cart" onClick={handleShowCart}>
               Cart <Badge bg="success">{cartProducts.length}</Badge>
             </Nav.Link>

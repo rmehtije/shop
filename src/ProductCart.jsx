@@ -19,14 +19,12 @@ function ProductCart({ handleDeleteCartProduct, product }) {
         <Card>
             <Card.Body>
                 <Row>
-                    <Col><Card.Img variant="top" src="holder.js/100px180" width={100} height={100} /></Col>
+                    <Col><Card.Img variant="top" src={product.image} width={100} height={100} /></Col>
                     <Col xs={6}>
                         <Card.Text>
-                            <span className='fs-4'>Card Title</span>
+                            <span className='fs-4'>{product.title}</span>
                             <br/>
                             Count: {count}
-                            <br />
-                            ID: {product.id}
                         </Card.Text>
                     </Col>
                     <Col>
