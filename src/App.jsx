@@ -20,7 +20,6 @@ function App() {
   });
   const [toastMessage, setToastMessage] = React.useState(null);
 
-  console.log({ toastMessage });
   const handleShowCart = () => setShowCart(true);
   const handleHideCart = () => setShowCart(false);
 
