@@ -5,3 +5,9 @@ export const getAllProducts = async () => {
 
     return await response.json();
 }
+
+export const getSingleProduct = async (id) => {
+    const response = await fetch(apiUrl + '/products/' + id);
+
+    return await response.json();
+}

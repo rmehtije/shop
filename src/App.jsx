@@ -1,13 +1,14 @@
 import './App.css';
 import React from 'react';
-import NavigationBar from "./NavigationBar";
-import Products from "./Products";
-import ProductPage from "./ProductPage";
+import NavigationBar from "./Navigation/NavigationBar";
+import Products from "./Product/Products";
+import ProductPage from "./Product/ProductPage";
 import Cart from './Cart';
-import AuthModal from './AuthModal';
+import AuthModal from './Authentication/AuthModal';
 import { getAllProducts } from './services/api/products';
 import { jwtDecode } from "jwt-decode";
 import ToastMessage from './ToastMessage';
+import { Routes, Route } from 'react-router';
 
 function App() {
   const [showCart, setShowCart] = React.useState(false);
@@ -51,8 +52,10 @@ function App() {
         cartProducts={cartProducts}
         handleShowAuthForm={handleShowAuthForm}
         authData={authData} />
-      <Products products={products} addProduct={addProduct} />
-      {/* <ProductPage setCartProducts={setCartProducts} /> */}
+      <Routes>
+        <Route index element={<Products products={products} addProduct={addProduct} />} />
+        <Route path="/product/:id" element={<ProductPage addProduct={addProduct} />} />
+      </Routes>
       <Cart showCart={showCart}
         handleHideCart={handleHideCart}
         cartProducts={cartProducts}
