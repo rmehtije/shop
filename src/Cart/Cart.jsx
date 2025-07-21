@@ -1,5 +1,5 @@
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import Products from './Products';
+import Products from '../Product/Products';
 
 function Cart({
     showCart,

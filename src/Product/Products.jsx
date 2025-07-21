@@ -2,7 +2,7 @@ import Product from './Product';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import ProductCart from './ProductCart';
+import ProductCart from '../Cart/ProductCart';
 
 const dummyProducts = Array.from({ length: 5 });
 
