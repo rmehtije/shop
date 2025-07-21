@@ -7,6 +7,7 @@ import Cart from './Cart';
 import AuthModal from './AuthModal';
 import { getAllProducts } from './services/api/products';
 import { jwtDecode } from "jwt-decode";
+import ToastMessage from './ToastMessage';
 
 function App() {
   const [showCart, setShowCart] = React.useState(false);
@@ -17,12 +18,15 @@ function App() {
     jwt: '',
     data: {}
   });
+  const [toastMessage, setToastMessage] = React.useState(null);
 
   const handleShowCart = () => setShowCart(true);
   const handleHideCart = () => setShowCart(false);
 
   const handleShowAuthForm = () => setShowAuthForm(true);
   const handleHideAuthForm = () => setShowAuthForm(false);
+
+  const handleCloseToast = () => setToastMessage(null);
 
   const handleDeleteCartProduct = product => setCartProducts(cartProducts.filter(cartProduct => cartProduct.id !== product.id));
 
@@ -45,7 +49,7 @@ function App() {
       <NavigationBar
         handleShowCart={handleShowCart}
         cartProducts={cartProducts}
-        handleShowAuthForm={handleShowAuthForm} 
+        handleShowAuthForm={handleShowAuthForm}
         authData={authData} />
       <Products products={products} addProduct={addProduct} />
       {/* <ProductPage setCartProducts={setCartProducts} /> */}
@@ -53,7 +57,12 @@ function App() {
         handleHideCart={handleHideCart}
         cartProducts={cartProducts}
         handleDeleteCartProduct={handleDeleteCartProduct} />
-      <AuthModal show={showAuthForm} handleClose={handleHideAuthForm} setAuthData={setAuthData} />
+      <AuthModal
+        show={showAuthForm}
+        handleClose={handleHideAuthForm}
+        setAuthData={setAuthData}
+        setToastMessage={setToastMessage} />
+      <ToastMessage message={toastMessage} handleClose={handleCloseToast} />
     </>
   )
 }
