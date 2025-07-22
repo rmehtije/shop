@@ -8,15 +8,20 @@ import Button from 'react-bootstrap/Button';
 import { useParams } from 'react-router';
 import { getSingleProduct } from "../services/api/products";
 
-function ProductPage({ addProduct }) {
+function ProductPage({ addProduct , setErrorMessage }) {
     const [product, setProduct] = React.useState({});
     const params = useParams();
 
     React.useEffect(() => {
         (async () => {
-            const product = await getSingleProduct(params.id);
+            try {
+                const product = await getSingleProduct(params.id);
 
-            setProduct(product);
+                setProduct(product);
+            } catch (error) {
+                setErrorMessage('Error getting product, please try again later!');
+            }
+            
         })();
     }, []);
 
