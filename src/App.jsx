@@ -9,17 +9,23 @@ import { getAllProducts } from './services/api/products';
 import { jwtDecode } from "jwt-decode";
 import ToastMessage from './ToastMessage';
 import { Routes, Route } from 'react-router';
+import useCart from './effects/useCart';
+import ErrorModal from './ErrorModal';
 
 function App() {
   const [showCart, setShowCart] = React.useState(false);
   const [showAuthForm, setShowAuthForm] = React.useState(false);
-  const [cartProducts, setCartProducts] = React.useState([]);
   const [products, setProducts] = React.useState([]);
   const [authData, setAuthData] = React.useState({
     jwt: '',
     data: {}
   });
   const [toastMessage, setToastMessage] = React.useState(null);
+  const [errorMessage, setErrorMessage] = React.useState(null);
+
+  const { cart, addProduct, removeProduct } = useCart({
+    userId: authData.data.userId,
+  });
 
   const handleShowCart = () => setShowCart(true);
   const handleHideCart = () => setShowCart(false);
@@ -28,13 +34,10 @@ function App() {
   const handleHideAuthForm = () => setShowAuthForm(false);
 
   const handleCloseToast = () => setToastMessage(null);
-
-  const handleDeleteCartProduct = product => setCartProducts(cartProducts.filter(cartProduct => cartProduct.id !== product.id));
-
-  const addProduct = product => setCartProducts(products => [...products, product]);
+  const handleCloseError = () => setErrorMessage(null);
 
   React.useEffect(() => {
-    getAllProducts().then(setProducts);
+    getAllProducts().then(setProducts).catch(error => setErrorMessage(error.toString()));
   }, []);
 
   React.useEffect(() => {
@@ -49,23 +52,25 @@ function App() {
     <>
       <NavigationBar
         handleShowCart={handleShowCart}
-        cartProducts={cartProducts}
+        cartProducts={cart.products || []}
         handleShowAuthForm={handleShowAuthForm}
         authData={authData} />
       <Routes>
         <Route index element={<Products products={products} addProduct={addProduct} />} />
-        <Route path="/product/:id" element={<ProductPage addProduct={addProduct} />} />
+        <Route path="/product/:id" element={<ProductPage addProduct={addProduct} setErrorMessage={setErrorMessage} />} />
       </Routes>
       <Cart showCart={showCart}
         handleHideCart={handleHideCart}
-        cartProducts={cartProducts}
-        handleDeleteCartProduct={handleDeleteCartProduct} />
+        cartProducts={cart.products || []}
+        handleDeleteCartProduct={removeProduct}
+        addProduct={addProduct} />
       <AuthModal
         show={showAuthForm}
         handleClose={handleHideAuthForm}
         setAuthData={setAuthData}
         setToastMessage={setToastMessage} />
       <ToastMessage message={toastMessage} handleClose={handleCloseToast} />
+      <ErrorModal message={errorMessage} handleClose={handleCloseError} />
     </>
   )
 }

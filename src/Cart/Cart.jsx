@@ -6,6 +6,7 @@ function Cart({
     handleHideCart,
     cartProducts,
     handleDeleteCartProduct,
+    addProduct,
 }) {
     return (
         <>
@@ -19,7 +20,8 @@ function Cart({
                         classNameCol="w-100"
                         isCartProduct
                         products={cartProducts}
-                        handleDeleteCartProduct={handleDeleteCartProduct} />
+                        handleDeleteCartProduct={handleDeleteCartProduct}
+                        addProduct={addProduct} />
                 </Offcanvas.Body>
             </Offcanvas>
         </>
