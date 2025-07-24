@@ -6,15 +6,13 @@ function useCart({ userId }) {
 
     const addProduct = async (product) => {
         if (cart.id) {
-            cart.products = cart.products.map(cartProduct => {
-                cartProduct.quantity = cartProduct.quantity ?? 1;
+            const cartProduct = cart.products.find(cartProduct => cartProduct.id === product.id);
 
-                if (cartProduct.id === product.id) 
-                    cartProduct.quantity = cartProduct.quantity + 1;
-
-                return cartProduct;
-
-            });
+            if (cartProduct)
+                cartProduct.quantity = (cartProduct.quantity || 1) + 1;
+            else
+                cart.products.push(product);
+            
             const newData = await updateCart(cart.id, {
                 userId,
                 id: cart.id,

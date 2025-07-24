@@ -2,11 +2,16 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useLocation } from 'react-router';
 
-function ProductCart({ handleDeleteCartProduct, product, addProduct }) {
+function ProductCart({ handleDeleteCartProduct, product, addProduct, isCheckout }) {
+
+    const location = useLocation();
 
     const handleAddCount = () => addProduct(product);
     const handleDelete = () => handleDeleteCartProduct(product);
+
+    const showInfo = location.pathname === '/checkout' && isCheckout;
 
     return (
         <Card>
@@ -17,6 +22,8 @@ function ProductCart({ handleDeleteCartProduct, product, addProduct }) {
                         <Card.Text>
                             <span className='fs-4'>{product.title}</span>
                             <br />
+                            {showInfo && product.description}
+                            <br />
                             Count: {product.quantity ?? 1}
                         </Card.Text>
                     </Col>
@@ -25,8 +32,6 @@ function ProductCart({ handleDeleteCartProduct, product, addProduct }) {
                         <Button variant="danger" onClick={handleDelete}>Remove 1</Button>
                     </Col>
                 </Row>
-
-
             </Card.Body>
         </Card>
     );

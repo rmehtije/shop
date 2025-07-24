@@ -1,5 +1,7 @@
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Products from '../Product/Products';
+import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router';
 
 function Cart({
     showCart,
@@ -8,6 +10,10 @@ function Cart({
     handleDeleteCartProduct,
     addProduct,
 }) {
+    const navigate = useNavigate();
+
+    const handleOnClick = () => navigate('/checkout');
+
     return (
         <>
             <Offcanvas show={showCart} onHide={handleHideCart} placement='end'>
@@ -22,6 +28,7 @@ function Cart({
                         products={cartProducts}
                         handleDeleteCartProduct={handleDeleteCartProduct}
                         addProduct={addProduct} />
+                    <Button variant="success" onClick={handleOnClick}>Checkout</Button>
                 </Offcanvas.Body>
             </Offcanvas>
         </>
