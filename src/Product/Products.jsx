@@ -12,7 +12,8 @@ function Products({
     isCartProduct,
     products = dummyProducts,
     handleDeleteCartProduct,
-    addProduct
+    addProduct,
+    isCheckout,
 }) {
     return (
         <Container>
@@ -21,6 +22,7 @@ function Products({
                     <Col key={index} className={classNameCol}>
                         {isCartProduct ?
                             <ProductCart
+                                isCheckout={isCheckout}
                                 product={product}
                                 handleDeleteCartProduct={handleDeleteCartProduct}
                                 addProduct={addProduct}
