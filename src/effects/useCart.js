@@ -6,21 +6,22 @@ function useCart({ userId }) {
     const dispatch = useDispatch();
 
     const addProduct = async (cart, product) => {
-        console.log({ cart})
         if (cart.id) {
-            const cartProduct = cart.products.find(cartProduct => cartProduct.id === product.id);
-
             let updatedProducts;
 
-            if (cartProduct)
-                cartProduct.quantity = (cartProduct.quantity || 1) + 1;
+            const cartProduct = cart.products.find(cartProduct => cartProduct.id === product.id);
+
+            if (cartProduct) {
+                const newQuantityProduct = { ...product, quantity: (cartProduct.quantity || 1) + 1 };
+                updatedProducts = cart.products.map(cartProduct => cartProduct.id === product.id ? newQuantityProduct : cartProduct)
+            }
             else
                 updatedProducts = [...cart.products, product];
-            
+
             const newData = await updateCart(cart.id, {
                 userId,
                 id: cart.id,
-                products: updatedProducts ?? cart.products,
+                products: updatedProducts,
             });
 
             dispatch(setCart(newData));
@@ -35,16 +36,16 @@ function useCart({ userId }) {
     }
 
     const removeProduct = async (cart, product) => {
-        cart.products = cart.products.map(cartProduct => {
-            cartProduct.quantity = cartProduct.quantity ?? 1;
+        let updatedProducts = [];
 
-            if (cartProduct.id === product.id) cartProduct.quantity = cartProduct.quantity - 1;
+        for(const cartProduct of cart.products) {
+            if (cartProduct.id === product.id) updatedProducts.push({...cartProduct, quantity: cartProduct.quantity - 1});
+            else updatedProducts.push(cartProduct);
+        }
 
-            return cartProduct;
+        updatedProducts = updatedProducts.filter(cartProduct => cartProduct.quantity !== 0);
 
-        }).filter(cartProduct => cartProduct.quantity !== 0);
-
-        if (!cart.products.length) {
+        if (!updatedProducts.length) {
             await deleteCart(cart.id)
 
             dispatch(setCart({}));
@@ -52,7 +53,7 @@ function useCart({ userId }) {
             const newData = await updateCart(cart.id, {
                 userId,
                 id: cart.id,
-                products: cart.products,
+                products: updatedProducts,
             });
 
             dispatch(setCart(newData));
