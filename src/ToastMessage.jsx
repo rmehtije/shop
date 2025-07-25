@@ -1,6 +1,7 @@
 import Toast from 'react-bootstrap/Toast';
 
 function ToastMessage({ message, handleClose }) {
+    console.log('ToastMessage');
     return (
         <Toast
             onClose={handleClose}

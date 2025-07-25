@@ -14,8 +14,7 @@ import ErrorModal from './ErrorModal';
 import Checkout from './Cart/Checkout';
 
 function App() {
-  const [showCart, setShowCart] = React.useState(false);
-  const [showAuthForm, setShowAuthForm] = React.useState(false);
+  console.log('App');
   const [products, setProducts] = React.useState([]);
   const [authData, setAuthData] = React.useState({
     jwt: '',
@@ -24,15 +23,9 @@ function App() {
   const [toastMessage, setToastMessage] = React.useState(null);
   const [errorMessage, setErrorMessage] = React.useState(null);
 
-  const { cart, addProduct, removeProduct } = useCart({
+  const { addProduct, removeProduct } = useCart({
     userId: authData.data.userId,
   });
-
-  const handleShowCart = () => setShowCart(true);
-  const handleHideCart = () => setShowCart(false);
-
-  const handleShowAuthForm = () => setShowAuthForm(true);
-  const handleHideAuthForm = () => setShowAuthForm(false);
 
   const handleCloseToast = () => setToastMessage(null);
   const handleCloseError = () => setErrorMessage(null);
@@ -51,11 +44,7 @@ function App() {
 
   return (
     <>
-      <NavigationBar
-        handleShowCart={handleShowCart}
-        cartProducts={cart.products || []}
-        handleShowAuthForm={handleShowAuthForm}
-        authData={authData} />
+      <NavigationBar authData={authData} />
       <Routes>
         <Route index element={<Products products={products} addProduct={addProduct} />} />
         <Route path="/product/:id" element={<ProductPage addProduct={addProduct} setErrorMessage={setErrorMessage} />} />
@@ -63,18 +52,13 @@ function App() {
           <Checkout
             addProduct={addProduct}
             handleDeleteCartProduct={removeProduct}
-            cartProducts={cart.products || []}
           />}
         />
       </Routes>
-      <Cart showCart={showCart}
-        handleHideCart={handleHideCart}
-        cartProducts={cart.products || []}
+      <Cart
         handleDeleteCartProduct={removeProduct}
         addProduct={addProduct} />
       <AuthModal
-        show={showAuthForm}
-        handleClose={handleHideAuthForm}
         setAuthData={setAuthData}
         setToastMessage={setToastMessage} />
       <ToastMessage message={toastMessage} handleClose={handleCloseToast} />

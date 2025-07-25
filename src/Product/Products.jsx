@@ -15,6 +15,7 @@ function Products({
     addProduct,
     isCheckout,
 }) {
+    console.log('Products');
     return (
         <Container>
             <Row xs={1} md={2} lg={3} xl={4} className={classNameRow}>
