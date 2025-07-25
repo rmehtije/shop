@@ -10,6 +10,7 @@ const actions = {
 };
 
 function AuthForm({ formRef, setAuthData, handleClose, setToastMessage }) {
+    console.log('AuthForm');
     const [action, setAction] = React.useState(actions.SignIn);
 
     const handleOnSelect = (action) => setAction(action);

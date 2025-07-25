@@ -2,11 +2,18 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import AuthForm from './AuthForm';
+import { useSelector, useDispatch } from 'react-redux';
+import { setShowAuthForm } from '../services/state/store';
 
-function AuthModal({ show, handleClose, setAuthData, setToastMessage }) {
+function AuthModal({ setAuthData, setToastMessage }) {
+    console.log('AuthModal');
+    const dispatch = useDispatch();
+    const show = useSelector((state) => state.showAuthForm);
+
     const formRef = React.useRef();
 
     const handleClick = () => formRef.current.requestSubmit();
+    const handleClose = () => dispatch(setShowAuthForm(false));
 
     return (
         <Modal show={show} onHide={handleClose}>

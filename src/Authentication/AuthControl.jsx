@@ -2,7 +2,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 
 function AuthControl({ action, actions, handleOnSelect }) {
-
+  console.log('AuthControl');
   return (
     <Tabs
       id="controlled-tab-example"

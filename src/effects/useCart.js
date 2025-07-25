@@ -1,36 +1,40 @@
-import React from 'react';
 import { addNewCart, updateCart, deleteCart } from '../services/api/carts';
+import { useDispatch } from 'react-redux';
+import { setCart } from '../services/state/store';
 
 function useCart({ userId }) {
-    const [cart, setCart] = React.useState({});
+    const dispatch = useDispatch();
 
-    const addProduct = async (product) => {
+    const addProduct = async (cart, product) => {
+        console.log({ cart})
         if (cart.id) {
             const cartProduct = cart.products.find(cartProduct => cartProduct.id === product.id);
+
+            let updatedProducts;
 
             if (cartProduct)
                 cartProduct.quantity = (cartProduct.quantity || 1) + 1;
             else
-                cart.products.push(product);
+                updatedProducts = [...cart.products, product];
             
             const newData = await updateCart(cart.id, {
                 userId,
                 id: cart.id,
-                products: cart.products,
+                products: updatedProducts ?? cart.products,
             });
 
-            setCart(newData);
+            dispatch(setCart(newData));
         } else {
             const newData = await addNewCart({
                 userId,
                 products: [product],
             });
 
-            setCart(newData);
+            dispatch(setCart(newData));
         }
     }
 
-    const removeProduct = async (product) => {
+    const removeProduct = async (cart, product) => {
         cart.products = cart.products.map(cartProduct => {
             cartProduct.quantity = cartProduct.quantity ?? 1;
 
@@ -43,7 +47,7 @@ function useCart({ userId }) {
         if (!cart.products.length) {
             await deleteCart(cart.id)
 
-            setCart({});
+            dispatch(setCart({}));
         } else {
             const newData = await updateCart(cart.id, {
                 userId,
@@ -51,14 +55,13 @@ function useCart({ userId }) {
                 products: cart.products,
             });
 
-            setCart(newData);
+            dispatch(setCart(newData));
         }
     }
 
     return {
         addProduct,
         removeProduct,
-        cart,
     }
 }
 

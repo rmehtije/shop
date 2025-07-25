@@ -5,18 +5,28 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Badge from 'react-bootstrap/Badge';
 import { NavLink } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { setShowCart, setShowAuthForm } from '../services/state/store';
 
-function NavigationBar({ handleShowCart, cartProducts, handleShowAuthForm, authData }) {
+function NavigationBar({ authData }) {
+  console.log('NavigationBar');
+
+  const dispatch = useDispatch();
+
+  const cart = useSelector((state) => state.cart);
 
   const productQuantity = React.useMemo(() => {
     let quantity = 0;
 
-    cartProducts.map(product => {
+    cart.products?.map(product => {
       quantity += product.quantity || 1;
     });
 
     return quantity;
-  }, [cartProducts]);
+  }, [cart.products]);
+
+  const handleShowCart = () => dispatch(setShowCart(true));
+  const handleShowAuthForm = () => dispatch(setShowAuthForm(true));
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary mb-4">

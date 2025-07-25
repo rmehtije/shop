@@ -1,6 +1,7 @@
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
 function Category() {
+  console.log('Category');
   return (
     <Breadcrumb>
       <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
