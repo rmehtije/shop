@@ -9,12 +9,17 @@ import { useParams } from 'react-router';
 import { getSingleProduct } from "../services/api/products";
 import { useSelector, useDispatch } from 'react-redux';
 import { setErrorMessage } from '../services/state/store';
+import useCart from '../effects/useCart';
 
-function ProductPage({ addProduct }) {
+function ProductPage() {
     console.log('ProductPage');
+    
     const dispatch = useDispatch();
-    const [product, setProduct] = React.useState({});
     const params = useParams();
+
+    const [product, setProduct] = React.useState({});
+
+    const { addProduct } = useCart();
 
     const cart = useSelector(state => state.cart);
 

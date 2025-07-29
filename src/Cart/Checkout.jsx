@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import Products from "../Product/Products";
 import { useSelector } from "react-redux";
 
-function Checkout({ handleDeleteCartProduct, addProduct }) {
+function Checkout() {
     console.log('Checkout');
     const cart = useSelector((state) => state.cart);
     return (
@@ -12,9 +12,7 @@ function Checkout({ handleDeleteCartProduct, addProduct }) {
                 classNameCol="w-100"
                 isCartProduct
                 isCheckout
-                products={cart.products || []}
-                handleDeleteCartProduct={handleDeleteCartProduct}
-                addProduct={addProduct} />
+                products={cart.products || []} />
         </Container>
     )
 }

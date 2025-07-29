@@ -5,15 +5,18 @@ import { singIn } from '../services/api/auth';
 import { addNewUser } from '../services/api/users';
 import { setToastMessage } from '../services/state/store';
 import { useDispatch } from 'react-redux';
+import { jwtDecode } from "jwt-decode";
+import { UserContext } from '../providers/UserProvider';
 
 const actions = {
     SignIn: 'signIn',
     SignUp: 'signUp'
 };
 
-function AuthForm({ formRef, setAuthData, handleClose }) {
+function AuthForm({ formRef, handleClose }) {
     console.log('AuthForm');
     const dispatch = useDispatch();
+    const { actions: { setAuthData } } = React.useContext(UserContext);
     const [action, setAction] = React.useState(actions.SignIn);
 
     const handleOnSelect = (action) => setAction(action);
@@ -34,7 +37,7 @@ function AuthForm({ formRef, setAuthData, handleClose }) {
         } else {
             const { token } = await singIn(username, password);
 
-            setAuthData(authData => ({ ...authData, jwt: token }));
+            setAuthData({ data: jwtDecode(token), jwt: token });
         }
 
 

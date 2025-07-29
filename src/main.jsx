@@ -4,11 +4,14 @@ import App from './App.jsx';
 import { BrowserRouter } from 'react-router';
 import { Provider } from 'react-redux';
 import { store } from './services/state/store';
+import UserProvider from './providers/UserProvider';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
     </Provider>
   </BrowserRouter>
 )
