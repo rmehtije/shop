@@ -45,7 +45,7 @@ function App() {
       <NavigationBar authData={authData} />
       <Routes>
         <Route index element={<Products products={products} addProduct={addProduct} />} />
-``        <Route path="/product/:id" element={<ProductPage addProduct={addProduct} />} />
+        <Route path="/product/:id" element={<ProductPage addProduct={addProduct} />} />
         <Route path="/checkout" element={
           <Checkout
             addProduct={addProduct}
