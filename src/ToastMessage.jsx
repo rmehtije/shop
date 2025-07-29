@@ -1,7 +1,15 @@
 import Toast from 'react-bootstrap/Toast';
+import { setToastMessage } from './services/state/store';
+import { useSelector, useDispatch } from 'react-redux';
 
-function ToastMessage({ message, handleClose }) {
+function ToastMessage() {
     console.log('ToastMessage');
+
+    const dispatch = useDispatch();
+    const message = useSelector((state) => state.toastMessage);
+
+    const handleClose = () => dispatch(setToastMessage(null));
+
     return (
         <Toast
             onClose={handleClose}

@@ -7,10 +7,12 @@ import Category from "../Navigation/Category";
 import Button from 'react-bootstrap/Button';
 import { useParams } from 'react-router';
 import { getSingleProduct } from "../services/api/products";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setErrorMessage } from '../services/state/store';
 
-function ProductPage({ addProduct , setErrorMessage }) {
+function ProductPage({ addProduct }) {
     console.log('ProductPage');
+    const dispatch = useDispatch();
     const [product, setProduct] = React.useState({});
     const params = useParams();
 
@@ -23,7 +25,7 @@ function ProductPage({ addProduct , setErrorMessage }) {
 
                 setProduct(product);
             } catch (error) {
-                setErrorMessage('Error getting product, please try again later!');
+                dispatch(setErrorMessage('Error getting product, please try again later!'));
             }
             
         })();
@@ -31,7 +33,7 @@ function ProductPage({ addProduct , setErrorMessage }) {
 
     return (
         <Container>
-            <Category />
+            <Category product={product} />
             <Row>
                 <Col>
                     <img src={product.image} width={250}/>

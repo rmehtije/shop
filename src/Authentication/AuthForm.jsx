@@ -3,14 +3,17 @@ import Form from 'react-bootstrap/Form';
 import AuthControl from './AuthControl';
 import { singIn } from '../services/api/auth';
 import { addNewUser } from '../services/api/users';
+import { setToastMessage } from '../services/state/store';
+import { useDispatch } from 'react-redux';
 
 const actions = {
     SignIn: 'signIn',
     SignUp: 'signUp'
 };
 
-function AuthForm({ formRef, setAuthData, handleClose, setToastMessage }) {
+function AuthForm({ formRef, setAuthData, handleClose }) {
     console.log('AuthForm');
+    const dispatch = useDispatch();
     const [action, setAction] = React.useState(actions.SignIn);
 
     const handleOnSelect = (action) => setAction(action);
@@ -27,7 +30,7 @@ function AuthForm({ formRef, setAuthData, handleClose, setToastMessage }) {
                 email, username, password
             });
 
-            setToastMessage('New user created with id: ' + id);
+            dispatch(setToastMessage('New user created with id: ' + id));
         } else {
             const { token } = await singIn(username, password);
 
