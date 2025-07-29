@@ -12,26 +12,24 @@ import { Routes, Route } from 'react-router';
 import useCart from './effects/useCart';
 import ErrorModal from './ErrorModal';
 import Checkout from './Cart/Checkout';
+import { setErrorMessage } from './services/state/store';
+import { useDispatch } from 'react-redux';
 
 function App() {
   console.log('App');
+  const dispatch = useDispatch();
   const [products, setProducts] = React.useState([]);
   const [authData, setAuthData] = React.useState({
     jwt: '',
     data: {}
   });
-  const [toastMessage, setToastMessage] = React.useState(null);
-  const [errorMessage, setErrorMessage] = React.useState(null);
 
   const { addProduct, removeProduct } = useCart({
     userId: authData.data.userId,
   });
 
-  const handleCloseToast = () => setToastMessage(null);
-  const handleCloseError = () => setErrorMessage(null);
-
   React.useEffect(() => {
-    getAllProducts().then(setProducts).catch(error => setErrorMessage(error.toString()));
+    getAllProducts().then(setProducts).catch(error => dispatch(setErrorMessage(error.toString())));
   }, []);
 
   React.useEffect(() => {
@@ -47,7 +45,7 @@ function App() {
       <NavigationBar authData={authData} />
       <Routes>
         <Route index element={<Products products={products} addProduct={addProduct} />} />
-        <Route path="/product/:id" element={<ProductPage addProduct={addProduct} setErrorMessage={setErrorMessage} />} />
+``        <Route path="/product/:id" element={<ProductPage addProduct={addProduct} />} />
         <Route path="/checkout" element={
           <Checkout
             addProduct={addProduct}
@@ -58,11 +56,9 @@ function App() {
       <Cart
         handleDeleteCartProduct={removeProduct}
         addProduct={addProduct} />
-      <AuthModal
-        setAuthData={setAuthData}
-        setToastMessage={setToastMessage} />
-      <ToastMessage message={toastMessage} handleClose={handleCloseToast} />
-      <ErrorModal message={errorMessage} handleClose={handleCloseError} />
+      <AuthModal setAuthData={setAuthData} />
+      <ToastMessage />
+      <ErrorModal />
     </>
   )
 }

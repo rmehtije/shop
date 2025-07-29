@@ -5,7 +5,7 @@ import AuthForm from './AuthForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { setShowAuthForm } from '../services/state/store';
 
-function AuthModal({ setAuthData, setToastMessage }) {
+function AuthModal({ setAuthData }) {
     console.log('AuthModal');
     const dispatch = useDispatch();
     const show = useSelector((state) => state.showAuthForm);
@@ -25,7 +25,7 @@ function AuthModal({ setAuthData, setToastMessage }) {
                     formRef={formRef}
                     setAuthData={setAuthData}
                     handleClose={handleClose}
-                    setToastMessage={setToastMessage} />
+                    />
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
