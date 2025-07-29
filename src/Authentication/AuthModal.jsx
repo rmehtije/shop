@@ -5,7 +5,7 @@ import AuthForm from './AuthForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { setShowAuthForm } from '../services/state/store';
 
-function AuthModal({ setAuthData }) {
+function AuthModal() {
     console.log('AuthModal');
     const dispatch = useDispatch();
     const show = useSelector((state) => state.showAuthForm);
@@ -23,7 +23,6 @@ function AuthModal({ setAuthData }) {
             <Modal.Body>
                 <AuthForm
                     formRef={formRef}
-                    setAuthData={setAuthData}
                     handleClose={handleClose}
                     />
             </Modal.Body>

@@ -4,14 +4,19 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
+import useCart from '../effects/useCart';
 
-function ProductCart({ handleDeleteCartProduct, product, addProduct, isCheckout }) {
+function ProductCart({ product, isCheckout }) {
     console.log('ProductCart');
+
     const location = useLocation();
 
+    const { addProduct, removeProduct } = useCart();
+
     const cart = useSelector(state => state.cart);
+
     const handleAddCount = () => addProduct(cart, product);
-    const handleDelete = () => handleDeleteCartProduct(cart, product);
+    const handleDelete = () => removeProduct(cart, product);
 
     const showInfo = location.pathname === '/checkout' && isCheckout;
 

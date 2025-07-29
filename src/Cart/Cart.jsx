@@ -5,10 +5,7 @@ import { useNavigate } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { setShowCart } from '../services/state/store';
 
-function Cart({
-    handleDeleteCartProduct,
-    addProduct,
-}) {
+function Cart() {
     console.log('Cart');
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -29,9 +26,7 @@ function Cart({
                         classNameRow="flex-column"
                         classNameCol="w-100"
                         isCartProduct
-                        products={cart.products || []}
-                        handleDeleteCartProduct={handleDeleteCartProduct}
-                        addProduct={addProduct} />
+                        products={cart.products || []} />
                     <Button variant="success" onClick={handleOnClick}>Checkout</Button>
                 </Offcanvas.Body>
             </Offcanvas>

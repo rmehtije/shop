@@ -7,11 +7,13 @@ import Badge from 'react-bootstrap/Badge';
 import { NavLink } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { setShowCart, setShowAuthForm } from '../services/state/store';
+import { UserContext } from '../providers/UserProvider';
 
-function NavigationBar({ authData }) {
+function NavigationBar() {
   console.log('NavigationBar');
 
   const dispatch = useDispatch();
+  const { values: { authData }} = React.useContext(UserContext);
 
   const cart = useSelector((state) => state.cart);
 
@@ -36,7 +38,7 @@ function NavigationBar({ authData }) {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <NavLink to="/" className="nav-link">Home</NavLink>
-            <Nav.Link href="#link">Link</Nav.Link>
+            <NavLink to="/add-product" className="nav-link">Add product</NavLink>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
