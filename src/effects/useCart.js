@@ -43,13 +43,12 @@ function useCart() {
         let updatedProducts = [];
 
         for (const cartProduct of cart.products) {
-            if (cartProduct.id === product.id) updatedProducts.push({ ...cartProduct, quantity: cartProduct.quantity - 1 });
-            else updatedProducts.push(cartProduct);
+            const productWithQuantity = {...cartProduct, quantity: (cartProduct.quantity || 1)};
+            if (cartProduct.id === product.id) updatedProducts.push({ ...productWithQuantity, quantity: productWithQuantity.quantity - 1 });
+            else updatedProducts.push(productWithQuantity);
         }
 
-        console.log({ updatedProducts });
-
-        updatedProducts = updatedProducts.filter(cartProduct => cartProduct.quantity !== null || cartProduct.quantity > 0);
+        updatedProducts = updatedProducts.filter(cartProduct => cartProduct.quantity > 0);
 
         if (!updatedProducts.length) {
             await deleteCart(cart.id)
