@@ -3,65 +3,58 @@ import { addNewCart, updateCart, deleteCart } from '../services/api/carts';
 import { useDispatch } from 'react-redux';
 import { setCart } from '../services/state/store';
 import { UserContext } from '../providers/UserProvider';
+import lodash from 'lodash';
 
 function useCart() {
     const dispatch = useDispatch();
 
     const { values: { authData } } = React.useContext(UserContext);
+    const userId = authData.data.userId;
+
+    const updateCartState = data => dispatch(setCart(data));
+
+    const syncCart = async (id, products) => {
+        const data = await updateCart(id, { userId, id, products });
+        updateCartState(data);
+    };
+
+    const getQuantity = ({ quantity }) => quantity || 1;
 
     const addProduct = async (cart, product) => {
+        const cartProducts = cart.products ?? [];
+
+        const existing = lodash.find(cartProducts, { id: product.id });
+
+        const products = existing
+            ? lodash.map(cartProducts,
+                p => p.id === product.id
+                    ? { ...p, quantity: getQuantity(p) + 1 }
+                    : p)
+            : [...cartProducts, { ...product, quantity: 1 }];
+
         if (cart.id) {
-            let updatedProducts;
-
-            const cartProduct = cart.products.find(cartProduct => cartProduct.id === product.id);
-
-            if (cartProduct) {
-                const newQuantityProduct = { ...product, quantity: (cartProduct.quantity || 1) + 1 };
-                updatedProducts = cart.products.map(cartProduct => cartProduct.id === product.id ? newQuantityProduct : cartProduct)
-            }
-            else
-                updatedProducts = [...cart.products, product];
-
-            const newData = await updateCart(cart.id, {
-                userId: authData.data.userId,
-                id: cart.id,
-                products: updatedProducts,
-            });
-
-            dispatch(setCart(newData));
+            await syncCart(cart.id, products);
         } else {
-            const newData = await addNewCart({
-                userId: authData.data.userId,
-                products: [product],
-            });
+            const newData = await addNewCart({ userId, products });
 
-            dispatch(setCart(newData));
+            updateCartState(newData);
         }
     }
 
     const removeProduct = async (cart, product) => {
-        let updatedProducts = [];
+        const cartProducts = cart.products ?? [];
 
-        for (const cartProduct of cart.products) {
-            const productWithQuantity = {...cartProduct, quantity: (cartProduct.quantity || 1)};
-            if (cartProduct.id === product.id) updatedProducts.push({ ...productWithQuantity, quantity: productWithQuantity.quantity - 1 });
-            else updatedProducts.push(productWithQuantity);
-        }
+        const products = lodash.chain(cartProducts)
+            .map(p => p.id === product.id ? { ...p, quantity: getQuantity(p) - 1 } : p)
+            .filter(p => p.quantity > 0)
+            .value();
 
-        updatedProducts = updatedProducts.filter(cartProduct => cartProduct.quantity > 0);
+        if (!products.length) {
+            await deleteCart(cart.id);
 
-        if (!updatedProducts.length) {
-            await deleteCart(cart.id)
-
-            dispatch(setCart({}));
+            updateCartState({});
         } else {
-            const newData = await updateCart(cart.id, {
-                userId: authData.data.userId,
-                id: cart.id,
-                products: updatedProducts,
-            });
-
-            dispatch(setCart(newData));
+            await syncCart(cart.id, products);
         }
     }
 
